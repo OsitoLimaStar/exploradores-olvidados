@@ -1,13 +1,36 @@
 {% extends "base.html" %}
+{% from "tarjeta.html" import tarjeta %}
 {% block contenido %}
-  <section class="hero">
-    <h1 class="display-4">Exploradores Olvidados</h1>
-    <p class="lead mt-3">
-      Historias del hardware que la NASA dejó en la Luna, Marte y el espacio profundo.
-    </p>
-        <a class="btn btn-outline-light btn-lg mt-3 me-2" href="{{ url_for('equipos.lista') }}">Ver catálogo</a>
-    {% if not g.usuario %}
-      <a class="btn btn-primary btn-lg mt-3" href="{{ url_for('auth.registro') }}">Únete a la misión</a>
-    {% endif %}
-  </section>
+<section class="hero">
+  <div class="planeta pl-luna"></div><div class="planeta pl-marte"></div><div class="planeta pl-saturno"></div>
+  <span class="badge rounded-pill text-bg-warning mb-3">🚀 {{ total }} exploradores te esperan</span>
+  <h1>Exploradores Olvidados</h1>
+  <p class="lead col-lg-7 mt-3">Hace décadas la NASA envió robots a la Luna, a Marte y más allá. Ya terminaron su trabajo, pero cada uno tiene una historia increíble. ¿Quieres conocerlas?</p>
+  <a class="btn btn-cohete btn-lg mt-3" href="{{ url_for('equipos.lista') }}">🚀 Empezar el viaje</a>
+</section>
+
+<section class="my-5">
+  <h2 class="text-center mb-4">¿A dónde fueron?</h2>
+  <div class="row g-3">
+    {% for nombre, icono, texto, clase in [
+      ('Luna','🌙','Módulos, buggies y experimentos de los astronautas del Apolo.','luna'),
+      ('Marte','🔴','Rovers y módulos que buscaron agua y vida en el planeta rojo.','marte'),
+      ('Espacio profundo','🚀','Sondas y telescopios que viajan lejos de la Tierra.','espacio')] %}
+      <div class="col-md-4">
+        <a class="destino loc-{{ clase }}" href="{{ url_for('equipos.lista', ubicacion=nombre) }}">
+          <span class="icono">{{ icono }}</span><h3 class="mt-2">{{ nombre }}</h3><p class="mb-0">{{ texto }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% if destacados %}
+<section class="mb-5">
+  <h2 class="text-center mb-4">Conoce a algunos exploradores</h2>
+  <div class="row g-3">
+    {% for e in destacados %}<div class="col-md-4">{{ tarjeta(e) }}</div>{% endfor %}
+  </div>
+</section>
+{% endif %}
 {% endblock %}

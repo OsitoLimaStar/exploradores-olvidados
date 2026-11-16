@@ -1,45 +1,26 @@
 {% extends "base.html" %}
+{% from "tarjeta.html" import tarjeta %}
 {% block contenido %}
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="mb-0">Catálogo de equipos</h2>
-    {% if g.usuario and g.usuario['rol'] == 'admin' %}
-      <a class="btn btn-primary" href="{{ url_for('equipos.nuevo') }}">+ Nuevo equipo</a>
-    {% endif %}
-  </div>
-
-  <form class="row g-2 mb-4" method="get">
-    <div class="col-md-6">
-      <input class="form-control" name="q" value="{{ q }}" placeholder="Buscar por nombre o misión">
-    </div>
-    <div class="col-md-4">
-      <select class="form-select" name="ubicacion">
-        <option value="">Todas las ubicaciones</option>
-        {% for u in ubicaciones %}
-          <option value="{{ u }}" {{ 'selected' if u == ubicacion }}>{{ u }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-md-2">
-      <button class="btn btn-outline-light w-100" type="submit">Filtrar</button>
-    </div>
-  </form>
-
-  {% if equipos %}
-    <div class="row g-3">
-      {% for e in equipos %}
-        <div class="col-md-6 col-lg-4">
-          <div class="card tarjeta-equipo h-100">
-            <div class="card-body">
-              <span class="badge text-bg-secondary mb-2">{{ e['ubicacion'] }}</span>
-              <h5 class="card-title">{{ e['nombre'] }}</h5>
-              <p class="card-text text-secondary">{{ e['mision'] }}</p>
-              <a class="stretched-link" href="{{ url_for('equipos.detalle', id=e['id']) }}"></a>
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="text-secondary">No hay equipos que coincidan.</p>
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+  <h2 class="mb-0">🛰️ Catálogo de exploradores</h2>
+  {% if g.usuario and g.usuario['rol'] == 'admin' %}
+    <a class="btn btn-cohete" href="{{ url_for('equipos.nuevo') }}">+ Nuevo equipo</a>
   {% endif %}
+</div>
+<form class="row g-2 mb-3" method="get">
+  <input type="hidden" name="ubicacion" value="{{ ubicacion }}">
+  <div class="col-md-10"><input class="form-control" name="q" value="{{ q }}" placeholder="Busca un explorador…"></div>
+  <div class="col-md-2"><button class="btn btn-outline-light w-100" type="submit">Buscar</button></div>
+</form>
+<div class="d-flex flex-wrap gap-2 mb-4">
+  <a class="chip {{ 'activo' if not ubicacion }}" href="{{ url_for('equipos.lista', q=q) }}">Todos</a>
+  {% for u in ubicaciones %}
+    <a class="chip {{ 'activo' if u == ubicacion }}" href="{{ url_for('equipos.lista', ubicacion=u, q=q) }}">{{ u }}</a>
+  {% endfor %}
+</div>
+{% if equipos %}
+  <div class="row g-3">{% for e in equipos %}<div class="col-md-6 col-lg-4">{{ tarjeta(e) }}</div>{% endfor %}</div>
+{% else %}
+  <p class="text-secondary">No hay equipos que coincidan.</p>
+{% endif %}
 {% endblock %}

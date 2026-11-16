@@ -29,6 +29,10 @@ def create_app(config=None):
 
     @app.route("/")
     def inicio():
-        return render_template("inicio.html")
+        conn = db.get_db()
+        total = conn.execute("SELECT COUNT(*) FROM equipos").fetchone()[0]
+        destacados = conn.execute(
+            "SELECT * FROM equipos ORDER BY RANDOM() LIMIT 3").fetchall()
+        return render_template("inicio.html", total=total, destacados=destacados)
 
     return app

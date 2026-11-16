@@ -1,0 +1,12 @@
+{% macro tarjeta(e) %}
+{% set c = {'Luna':'luna','Marte':'marte','Espacio profundo':'espacio'}[e['ubicacion']] %}
+<div class="card tarjeta-equipo loc-{{ c }} h-100">
+  <div class="tarjeta-cabeza">{{ {'luna':'🌙','marte':'🔴','espacio':'🚀'}[c] }}</div>
+  <div class="card-body">
+    <span class="pildora">{{ e['ubicacion'] }}{% if e['anio'] %} · {{ e['anio'] }}{% endif %}</span>
+    <h5 class="mt-2">{{ e['nombre'] }}</h5>
+    <p class="text-secondary mb-0">{{ e['historia'][:110] }}…</p>
+    <a class="stretched-link" href="{{ url_for('equipos.detalle', id=e['id']) }}"></a>
+  </div>
+</div>
+{% endmacro %}

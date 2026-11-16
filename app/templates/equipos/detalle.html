@@ -1,32 +1,41 @@
 {% extends "base.html" %}
 {% block contenido %}
-  <a class="text-decoration-none" href="{{ url_for('equipos.lista') }}">← Volver al catálogo</a>
-  <div class="card p-4 mt-3">
-    <span class="badge text-bg-secondary align-self-start mb-2">{{ equipo['ubicacion'] }}</span>
-    <h2>{{ equipo['nombre'] }}</h2>
-    <p class="text-secondary">
-      Misión: {{ equipo['mision'] }}
-      {% if equipo['anio'] %} · Año: {{ equipo['anio'] }}{% endif %}
-      · Estado: {{ equipo['estado'] }}
-    </p>
-    <h5>Su historia</h5>
-    <p>{{ equipo['historia'] }}</p>
-    {% if equipo['descubrimientos'] %}
-      <h5>Descubrimientos científicos</h5>
-      <p>{{ equipo['descubrimientos'] }}</p>
-    {% endif %}
-    {% if equipo['fuente_url'] %}
-      <p class="small">Fuente: <a href="{{ equipo['fuente_url'] }}" target="_blank" rel="noopener">{{ equipo['fuente_url'] }}</a></p>
-    {% endif %}
-
+{% set c = {'Luna':'luna','Marte':'marte','Espacio profundo':'espacio'}[equipo['ubicacion']] %}
+<a class="text-decoration-none" href="{{ url_for('equipos.lista') }}">← Volver al catálogo</a>
+<div class="ficha loc-{{ c }} mt-3">
+  <div class="ficha-cabeza">
+    <span class="pildora">{{ {'luna':'🌙','marte':'🔴','espacio':'🚀'}[c] }} {{ equipo['ubicacion'] }}</span>
+    <h1 class="mt-2 mb-0">{{ equipo['nombre'] }}</h1>
+  </div>
+  <div class="p-4">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <h4>📖 Mi historia</h4>
+        <p class="historia">{{ equipo['historia'] }}</p>
+        {% if equipo['descubrimientos'] %}
+          <div class="caja-descubre"><h5>🔬 ¿Qué descubrió?</h5><p class="mb-0">{{ equipo['descubrimientos'] }}</p></div>
+        {% endif %}
+      </div>
+      <div class="col-lg-4">
+        <div class="caja-descubre">
+          <h5>⚡ Datos rápidos</h5>
+          <p class="mb-1"><b>Misión:</b> {{ equipo['mision'] }}</p>
+          {% if equipo['anio'] %}<p class="mb-1"><b>Año:</b> {{ equipo['anio'] }}</p>{% endif %}
+          <p class="mb-0"><b>Estado:</b> {{ equipo['estado'] }}</p>
+        </div>
+        {% if equipo['fuente_url'] %}
+          <a class="btn btn-cohete w-100 mt-3" href="{{ equipo['fuente_url'] }}" target="_blank" rel="noopener">Ver fuente de la NASA ↗</a>
+        {% endif %}
+      </div>
+    </div>
     {% if g.usuario and g.usuario['rol'] == 'admin' %}
-      <div class="d-flex gap-2 mt-3">
+      <div class="d-flex gap-2 mt-4">
         <a class="btn btn-outline-light" href="{{ url_for('equipos.editar', id=equipo['id']) }}">Editar</a>
-        <form method="post" action="{{ url_for('equipos.eliminar', id=equipo['id']) }}"
-              onsubmit="return confirm('¿Seguro que quieres eliminar este equipo?');">
+        <form method="post" action="{{ url_for('equipos.eliminar', id=equipo['id']) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este equipo?');">
           <button class="btn btn-danger" type="submit">Eliminar</button>
         </form>
       </div>
     {% endif %}
   </div>
+</div>
 {% endblock %}

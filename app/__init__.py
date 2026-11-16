@@ -18,7 +18,7 @@ def create_app(config=None):
     app.register_blueprint(auth.bp)
     app.register_blueprint(equipos.bp)
 
-        # Crea la base de datos la primera vez que arranca la app
+    # Crea la base de datos la primera vez que arranca la app
     with app.app_context():
         if not os.path.exists(app.config["DATABASE"]):
             db.init_db()
@@ -26,3 +26,9 @@ def create_app(config=None):
         if os.environ.get("SEMBRAR_DATOS") == "1":
             from . import semilla
             semilla.sembrar()
+
+    @app.route("/")
+    def inicio():
+        return render_template("inicio.html")
+
+    return app

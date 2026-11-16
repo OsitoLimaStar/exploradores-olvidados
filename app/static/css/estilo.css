@@ -1,0 +1,27 @@
+body {
+  background: radial-gradient(circle at top, #1b2447 0%, #0b1020 60%);
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-weight: 800;
+  background: linear-gradient(90deg, #9ecbff, #c4a7ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  border: 1px solid rgba(158, 203, 255, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card.tarjeta-equipo:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(158, 203, 255, 0.15);
+}

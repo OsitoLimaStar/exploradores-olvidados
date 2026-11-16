@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 
 def create_app(config=None):
@@ -13,8 +13,9 @@ def create_app(config=None):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
-    from . import db
+    from . import db, auth
     db.init_app(app)
+    app.register_blueprint(auth.bp)
 
     # Crea la base de datos la primera vez que arranca la app
     with app.app_context():
@@ -23,6 +24,6 @@ def create_app(config=None):
 
     @app.route("/")
     def inicio():
-        return "Exploradores Olvidados: funciona!"
+        return render_template("inicio.html")
 
     return app

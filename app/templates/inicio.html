@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block contenido %}
+  <section class="hero">
+    <h1 class="display-4">Exploradores Olvidados</h1>
+    <p class="lead mt-3">
+      Historias del hardware que la NASA dejó en la Luna, Marte y el espacio profundo.
+    </p>
+    {% if not g.usuario %}
+      <a class="btn btn-primary btn-lg mt-3" href="{{ url_for('auth.registro') }}">Únete a la misión</a>
+    {% endif %}
+  </section>
+{% endblock %}

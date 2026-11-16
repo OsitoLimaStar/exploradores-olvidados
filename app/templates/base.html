@@ -16,6 +16,7 @@
       </button>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('equipos.lista') }}">Catálogo</a></li>
           {% if g.usuario %}
             <li class="nav-item"><span class="navbar-text">Hola, {{ g.usuario['nombre'] }}
               <span class="badge text-bg-info">{{ g.usuario['rol'] }}</span></span></li>

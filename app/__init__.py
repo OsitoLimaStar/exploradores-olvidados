@@ -13,9 +13,10 @@ def create_app(config=None):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
-    from . import db, auth
+    from . import db, auth, equipos
     db.init_app(app)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(equipos.bp)
 
     # Crea la base de datos la primera vez que arranca la app
     with app.app_context():

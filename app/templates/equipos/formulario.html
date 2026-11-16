@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block contenido %}
+  <div class="card p-4">
+    <h2 class="mb-3">{{ titulo }}</h2>
+    <form method="post">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Nombre</label>
+          <input class="form-control" name="nombre" value="{{ d.get('nombre', '') }}" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Año de llegada</label>
+          <input class="form-control" name="anio" value="{{ d.get('anio', '') }}">
+        </div>
+        <div class="col-md-8">
+          <label class="form-label">Misión</label>
+          <input class="form-control" name="mision" value="{{ d.get('mision', '') }}" required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Ubicación</label>
+          <select class="form-select" name="ubicacion">
+            {% for u in ubicaciones %}
+              <option value="{{ u }}" {{ 'selected' if d.get('ubicacion') == u }}>{{ u }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Estado actual</label>
+          <input class="form-control" name="estado" value="{{ d.get('estado', '') }}" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Historia</label>
+          <textarea class="form-control" name="historia" rows="5" required>{{ d.get('historia', '') }}</textarea>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Descubrimientos científicos</label>
+          <textarea class="form-control" name="descubrimientos" rows="3">{{ d.get('descubrimientos', '') }}</textarea>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Fuente (enlace a la página de la NASA)</label>
+          <input class="form-control" name="fuente_url" value="{{ d.get('fuente_url', '') }}">
+        </div>
+      </div>
+      <div class="d-flex gap-2 mt-4">
+        <button class="btn btn-primary" type="submit">Guardar</button>
+        <a class="btn btn-outline-light" href="{{ url_for('equipos.lista') }}">Cancelar</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

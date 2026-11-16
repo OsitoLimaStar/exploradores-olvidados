@@ -5,6 +5,7 @@
     <p class="lead mt-3">
       Historias del hardware que la NASA dejó en la Luna, Marte y el espacio profundo.
     </p>
+        <a class="btn btn-outline-light btn-lg mt-3 me-2" href="{{ url_for('equipos.lista') }}">Ver catálogo</a>
     {% if not g.usuario %}
       <a class="btn btn-primary btn-lg mt-3" href="{{ url_for('auth.registro') }}">Únete a la misión</a>
     {% endif %}

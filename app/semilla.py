@@ -50,17 +50,24 @@ def sembrar():
     db = get_db()
 
     email = os.environ.get("ADMIN_EMAIL", "").strip().lower()
-    password = os.environ.get("ADMIN_PASSWORD", "")
+    password = os.environ.get("ADMIN_PASSWORD", "").strip()
     if email and password:
+        clave = generate_password_hash(password)
         existe = db.execute(
             "SELECT id FROM usuarios WHERE email = ?", (email,)
         ).fetchone()
-        if not existe:
+        if existe:
+            db.execute(
+                "UPDATE usuarios SET password_hash = ?, rol = 'admin' "
+                "WHERE email = ?", (clave, email))
+        else:
             db.execute(
                 "INSERT INTO usuarios (nombre, email, password_hash, rol) "
                 "VALUES (?, ?, ?, 'admin')",
-                ("Administrador", email, generate_password_hash(password)),
-            )
+                ("Administrador", email, clave))
+        print(f"[semilla] Administrador listo: {email}", flush=True)
+    else:
+        print("[semilla] Faltan ADMIN_EMAIL o ADMIN_PASSWORD.", flush=True)
 
     if db.execute("SELECT COUNT(*) FROM equipos").fetchone()[0] == 0:
         db.executemany(
